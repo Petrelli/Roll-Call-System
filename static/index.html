@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Student Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            height: 100vh; /* 确保页面高度 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            color: hwb(260 6% 35%);
+            font-size: 2.5em;
+        }
+        #picked-student {
+            font-size: 3em !important; /* 添加 !important 确保样式应用 */
+            color: hsl(272, 39%, 49%);
+            margin: 20px 0;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f73;
+        }
+    </style>
+    <script>
+        async function pickRandomStudent() {
+            const response = await fetch('/random_pick', {
+                method: 'POST',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const pickedStudent = `${data.picked_student.id}: ${data.picked_student.name}`;
+                document.getElementById('picked-student').innerText = pickedStudent;
+            } else {
+                const errorData = await response.json();
+                alert(errorData.detail);
+            }
+        }
+
+        async function resetStudents() {
+            const response = await fetch('/reset', {
+                method: 'POST',
+            });
+            const data = await response.json();
+            alert(data.message);
+            document.getElementById('picked-student').innerText = '';
+        }
+    </script>
+</head>
+<body>
+    <h1>Random Student Picker</h1>
+    <div id="picked-student">Picked Student:</div>
+    <button onclick="pickRandomStudent()">Pick a Random Student</button>
+    <button onclick="resetStudents()">Reset</button>
+</body>
+</html>
