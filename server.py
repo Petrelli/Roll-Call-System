@@ -276,7 +276,7 @@ async def main_page(request: Request):
 async def login(response: Response, credentials: dict):
     username = credentials.get('username')
     password = credentials.get('password')
-    if username == "zhe" and password == "zhe139":
+    if username == "user" and password == "password":
         response.set_cookie(key=SESSION_COOKIE, value="authenticated")
         return {"message": "Authentication successful, session cookie set."}
     raise HTTPException(status_code=401, detail="Unauthorized")
